@@ -13,16 +13,32 @@ app.use(cors());
 app.use(express.json());
 
 // Pool de conexiones a MySQL
-const dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    charset: 'utf8mb4',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-};
+let dbConfig;
+
+if (process.env.JAWSDB_URL) {
+    const url = new URL(process.env.JAWSDB_URL);
+    dbConfig = {
+        host: url.hostname,
+        user: url.username,
+        password: url.password,
+        database: url.pathname.slice(1),
+        charset: 'utf8mb4',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+    };
+} else {
+    dbConfig = {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        charset: 'utf8mb4',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+    };
+}
 
 const pool = mysql.createPool(dbConfig);
 
@@ -53,7 +69,7 @@ app.get('/api/health', (req, res) => {
     res.status(200).json({ message: 'Server is running and healthy' });
 });
 
-// Middleware de manejo de errores (simple)
+// Middleware de manejo de errores
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
@@ -62,7 +78,6 @@ app.use((err, req, res, next) => {
 // Iniciar servidor
 const startServer = async () => {
     try {
-        // Probar la conexión a la base de datos
         const connection = await pool.getConnection();
         console.log('Successfully connected to the database.');
         connection.release();
@@ -72,7 +87,7 @@ const startServer = async () => {
         });
     } catch (error) {
         console.error('Failed to connect to the database:', error);
-        process.exit(1); // Salir si no se puede conectar a la DB
+        process.exit(1);
     }
 };
 
