@@ -1,6 +1,17 @@
 const getAllCursos = async (req, res) => {
     try {
-        const [rows] = await req.db.query('SELECT * FROM cursos WHERE activo = true');
+        // Incluye el/los docente(s) asignado(s) mediante la relación curso_docente.
+        const [rows] = await req.db.query(
+            `SELECT c.*,
+                    MIN(cd.docente_id) AS docente_id,
+                    GROUP_CONCAT(DISTINCT cd.docente_id) AS docente_ids,
+                    GROUP_CONCAT(DISTINCT CONCAT(u.nombre, ' ', u.apellido) SEPARATOR ', ') AS docente_nombre
+             FROM cursos c
+             LEFT JOIN curso_docente cd ON cd.curso_id = c.id
+             LEFT JOIN usuarios u ON u.id = cd.docente_id
+             WHERE c.activo = true
+             GROUP BY c.id`
+        );
         res.json(rows);
     } catch (error) {
         console.error(error);
@@ -9,24 +20,30 @@ const getAllCursos = async (req, res) => {
 };
 
 const createCurso = async (req, res) => {
-    const { nombre, descripcion } = req.body;
+    const { nombre, descripcion, nivel, componente_evaluacion } = req.body;
     try {
-        await req.db.query('INSERT INTO cursos (nombre, descripcion) VALUES (?, ?)', [nombre, descripcion]);
-        res.status(201).json({ message: 'Curso creado correctamente' });
+        await req.db.query(
+            'INSERT INTO cursos (nombre, descripcion, nivel, componente_evaluacion) VALUES (?, ?, ?, ?)',
+            [nombre, descripcion || null, nivel || null, componente_evaluacion || 'PRUEBAS']
+        );
+        res.status(201).json({ message: 'Materia creada correctamente' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al crear el curso' });
+        res.status(500).json({ message: 'Error al crear la materia' });
     }
 };
 
 const updateCurso = async (req, res) => {
-    const { nombre, descripcion } = req.body;
+    const { nombre, descripcion, nivel, componente_evaluacion } = req.body;
     try {
-        await req.db.query('UPDATE cursos SET nombre = ?, descripcion = ? WHERE id = ?', [nombre, descripcion, req.params.id]);
-        res.json({ message: 'Curso actualizado correctamente' });
+        await req.db.query(
+            'UPDATE cursos SET nombre = ?, descripcion = ?, nivel = ?, componente_evaluacion = ? WHERE id = ?',
+            [nombre, descripcion || null, nivel || null, componente_evaluacion || 'PRUEBAS', req.params.id]
+        );
+        res.json({ message: 'Materia actualizada correctamente' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al actualizar el curso' });
+        res.status(500).json({ message: 'Error al actualizar la materia' });
     }
 };
 
@@ -44,8 +61,8 @@ const asignarDocente = async (req, res) => {
     const { docente_id } = req.body;
     const curso_id = req.params.id;
     try {
-        // Esto asume que tienes una tabla `curso_docente` para manejar la relación
-        await req.db.query('INSERT INTO curso_docente (curso_id, docente_id) VALUES (?, ?)', [curso_id, docente_id]);
+        // INSERT IGNORE evita el error si el docente ya estaba asignado a ese curso.
+        await req.db.query('INSERT IGNORE INTO curso_docente (curso_id, docente_id) VALUES (?, ?)', [curso_id, docente_id]);
         res.json({ message: 'Docente asignado correctamente al curso' });
     } catch (error) {
         console.error(error);

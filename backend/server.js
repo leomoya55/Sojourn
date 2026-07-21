@@ -10,7 +10,8 @@ const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+// Límite ampliado para permitir imágenes (base64) en los comunicados.
+app.use(express.json({ limit: '6mb' }));
 
 // Pool de conexiones a MySQL
 let dbConfig;
@@ -56,6 +57,8 @@ const estudiantesRoutes = require('./routes/estudiantesRoutes');
 const notasRoutes = require('./routes/notasRoutes');
 const asistenciaRoutes = require('./routes/asistenciaRoutes');
 const comunicadosRoutes = require('./routes/comunicadosRoutes');
+const reportesRoutes = require('./routes/reportesRoutes');
+const periodosRoutes = require('./routes/periodosRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuariosRoutes);
@@ -64,9 +67,21 @@ app.use('/api/estudiantes', estudiantesRoutes);
 app.use('/api/notas', notasRoutes);
 app.use('/api/asistencia', asistenciaRoutes);
 app.use('/api/comunicados', comunicadosRoutes);
+app.use('/api/reportes', reportesRoutes);
+app.use('/api/periodos', periodosRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({ message: 'Server is running and healthy' });
+});
+
+// Frontend estático (SPA) — AL FINAL, después de todas las rutas /api.
+// El catch-all solo responde a rutas que NO empiezan con /api, para que las
+// peticiones a la API no devuelvan el index.html por error.
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Middleware de manejo de errores
@@ -81,6 +96,14 @@ const startServer = async () => {
         const connection = await pool.getConnection();
         console.log('Successfully connected to the database.');
         connection.release();
+
+        // Migraciones idempotentes (columnas nuevas y catálogo de materias).
+        try {
+            const { runMigrations } = require('./migrate');
+            await runMigrations(pool);
+        } catch (mErr) {
+            console.error('Migraciones:', mErr.message);
+        }
 
         app.listen(port, () => {
             console.log(`Server running on port ${port}`);

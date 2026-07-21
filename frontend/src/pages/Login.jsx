@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { homePathForRole } from '../utils/jwt';
 
+// Inicio de sesión — Sojourn Christian School.
+// Diseño institucional de dos paneles: marca (navy) + formulario.
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -12,7 +14,6 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    // Bitácora 04, obj. 6: validación de formularios en el frontend.
     const validate = () => {
         const e = {};
         if (!email.trim()) {
@@ -37,7 +38,6 @@ const Login = () => {
         setLoading(false);
 
         if (result.success) {
-            // Bitácora 03, obj. 5: redirección según el rol del usuario.
             navigate(homePathForRole(result.rol), { replace: true });
         } else {
             setAuthError(result.message);
@@ -45,54 +45,68 @@ const Login = () => {
     };
 
     return (
-        <div className="login-wrap">
-            <div className="login-card">
-                <div className="login-brand">ILE</div>
-                <h1>Gestión Académica</h1>
-                <p className="login-sub">
-                    Asociación del Instituto de Lengua Española
+        <div className="scs-login">
+            {/* Panel de marca */}
+            <aside className="scs-login-brand">
+                <div className="logo-box">
+                    <img src="/logo.png" alt="Sojourn Christian School" />
+                </div>
+                <h1>Portal Académico Institucional</h1>
+                <p>
+                    Plataforma de gestión académica de Sojourn Christian School: administración
+                    de materias, calificaciones, asistencia y comunicación con las familias, en un
+                    solo lugar.
                 </p>
+                <div className="brand-foot">© 2026 Sojourn Christian School · Todos los derechos reservados</div>
+            </aside>
 
-                {authError && <div className="alert alert-error">{authError}</div>}
+            {/* Panel de formulario */}
+            <main className="scs-login-form">
+                <div className="scs-login-card">
+                    <h2>Iniciar sesión</h2>
+                    <p className="scs-login-sub">Ingrese sus credenciales para continuar</p>
 
-                <form onSubmit={handleSubmit} noValidate>
-                    <div className="field">
-                        <label htmlFor="email">Correo electrónico</label>
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className={errors.email ? 'input-error' : ''}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="usuario@instituto.cr"
-                        />
-                        {errors.email && <span className="field-msg">{errors.email}</span>}
-                    </div>
+                    {authError && <div className="scs-alert scs-alert-error">{authError}</div>}
 
-                    <div className="field">
-                        <label htmlFor="password">Contraseña</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            className={errors.password ? 'input-error' : ''}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                        />
-                        {errors.password && (
-                            <span className="field-msg">{errors.password}</span>
-                        )}
-                    </div>
+                    <form onSubmit={handleSubmit} noValidate>
+                        <div className="scs-field">
+                            <label className="scs-label" htmlFor="email">Correo electrónico</label>
+                            <input
+                                id="email"
+                                type="email"
+                                className={`scs-input ${errors.email ? 'error' : ''}`}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="usuario@sojourn.cr"
+                            />
+                            {errors.email && <span className="scs-field-msg">{errors.email}</span>}
+                        </div>
 
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
-                        {loading ? 'Ingresando…' : 'Iniciar sesión'}
-                    </button>
-                </form>
+                        <div className="scs-field">
+                            <label className="scs-label" htmlFor="password">Contraseña</label>
+                            <input
+                                id="password"
+                                type="password"
+                                className={`scs-input ${errors.password ? 'error' : ''}`}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Ingrese su contraseña"
+                            />
+                            {errors.password && <span className="scs-field-msg">{errors.password}</span>}
+                        </div>
 
-                <p className="login-foot">
-                    © 2026 Asociación del Instituto de Lengua Española
-                </p>
-            </div>
+                        <button
+                            type="submit"
+                            className="scs-btn scs-btn-primary scs-login-btn"
+                            disabled={loading}
+                        >
+                            {loading ? 'Ingresando…' : 'Iniciar sesión'}
+                        </button>
+                    </form>
+
+                    <p className="scs-login-foot">Sojourn Christian School — Portal Académico</p>
+                </div>
+            </main>
         </div>
     );
 };

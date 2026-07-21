@@ -5,7 +5,7 @@ import axios from 'axios';
 // y de las sesiones expiradas. Todas las vistas consumen el backend a través de
 // esta instancia (nunca con axios.create o axios.get directos).
 const api = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: 'https://sojourn-77ff35048b8b.herokuapp.com',
     headers: { 'Content-Type': 'application/json' },
 });
 

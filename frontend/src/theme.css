@@ -1,0 +1,699 @@
+/* =============================================================
+   Sojourn Christian School — Sistema de diseño
+   Identidad visual oficial. Estilo institucional, sobrio y moderno.
+   Prefijo scs- para no chocar con estilos previos.
+   ============================================================= */
+
+:root {
+    --scs-green: #2D5016;        /* verde oscuro (primario) */
+    --scs-green-mid: #3D6B20;    /* verde medio */
+    --scs-green-dark: #224010;   /* hover de botón primario */
+    --scs-navy: #1B2A4A;         /* navy (topbar / headers modal) */
+    --scs-bg: #F4F7F4;           /* fondo claro */
+    --scs-white: #FFFFFF;
+    --scs-gray: #E8EDE8;         /* acento gris / hover sidebar */
+    --scs-border: #dfe6df;
+    --scs-text: #1f2a24;
+    --scs-muted: #6b7572;
+    --scs-danger: #b3261e;
+    --scs-danger-bg: #fbeae8;
+    --scs-ok: #2D5016;
+    --scs-ok-bg: #eef3e9;
+    --scs-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.08);
+    --scs-shadow-modal: 0 24px 60px rgba(16, 24, 40, 0.28);
+    --scs-radius: 6px;
+    --scs-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ----------------------------- Shell ----------------------------- */
+.scs-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--scs-bg);
+    color: var(--scs-text);
+    font-family: var(--scs-font);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ----------------------------- Topbar ----------------------------- */
+.scs-topbar {
+    background: var(--scs-navy);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    /* Acento institucional verde en la base de la barra. */
+    border-bottom: 3px solid var(--scs-green);
+}
+.scs-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.scs-hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--scs-white);
+    cursor: pointer;
+    padding: 4px;
+    align-items: center;
+}
+.scs-logo-chip {
+    background: var(--scs-white);
+    border-radius: 8px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+.scs-logo-chip img {
+    height: 32px;
+    display: block;
+}
+.scs-brand-text {
+    color: var(--scs-white);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+.scs-user-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.scs-user-info {
+    text-align: right;
+    line-height: 1.25;
+}
+.scs-user-name {
+    display: block;
+    color: var(--scs-white);
+    font-size: 14px;
+    font-weight: 600;
+}
+.scs-user-role {
+    display: block;
+    color: #aab6c9;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+.scs-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: var(--scs-white);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 8px 13px;
+    border-radius: var(--scs-radius);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+.scs-logout:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----------------------------- Body / Sidebar ----------------------------- */
+.scs-body {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+}
+.scs-sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--scs-white);
+    border-right: 1px solid var(--scs-gray);
+    padding: 18px 12px;
+}
+.scs-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: sticky;
+    top: 82px;
+}
+.scs-navitem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    padding: 11px 14px;
+    border-radius: 0 var(--scs-radius) var(--scs-radius) 0;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--scs-text);
+    cursor: pointer;
+    transition: background 0.14s ease, color 0.14s ease;
+}
+.scs-navitem svg {
+    color: var(--scs-muted);
+    transition: color 0.14s ease;
+}
+.scs-navitem:hover {
+    background: var(--scs-gray);
+}
+.scs-navitem.active {
+    background: var(--scs-bg);
+    border-left-color: var(--scs-green);
+    color: var(--scs-green);
+    font-weight: 600;
+}
+.scs-navitem.active svg {
+    color: var(--scs-green);
+}
+
+/* ----------------------------- Main ----------------------------- */
+.scs-main {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 32px;
+}
+.scs-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--scs-navy);
+    margin: 0 0 4px;
+}
+.scs-page-sub {
+    color: var(--scs-muted);
+    font-size: 14px;
+    margin: 0 0 22px;
+}
+
+/* ----------------------------- Tarjetas de estadística ----------------------------- */
+.scs-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+.scs-stat-card {
+    background: var(--scs-white);
+    border: 1px solid var(--scs-border);
+    border-top: 3px solid var(--scs-green);
+    border-radius: var(--scs-radius);
+    box-shadow: var(--scs-shadow);
+    padding: 18px 20px;
+    text-align: left;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+button.scs-stat-card {
+    cursor: pointer;
+}
+button.scs-stat-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.scs-stat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--scs-muted);
+}
+.scs-stat-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.scs-stat-icon {
+    color: var(--scs-green);
+    display: flex;
+}
+.scs-stat-value {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--scs-navy);
+    line-height: 1.1;
+}
+
+/* ----------------------------- Paneles / Cards ----------------------------- */
+.scs-card {
+    background: var(--scs-white);
+    border: 1px solid var(--scs-border);
+    border-radius: var(--scs-radius);
+    box-shadow: var(--scs-shadow);
+    padding: 22px;
+    margin-bottom: 20px;
+}
+.scs-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.scs-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--scs-navy);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.scs-card-title svg {
+    color: var(--scs-green);
+}
+
+/* ----------------------------- Tablas ----------------------------- */
+.scs-table-wrap {
+    overflow-x: auto;
+}
+.scs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.scs-table th {
+    text-align: left;
+    background: var(--scs-bg);
+    color: var(--scs-navy);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--scs-border);
+    white-space: nowrap;
+}
+.scs-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--scs-border);
+    vertical-align: middle;
+}
+.scs-table tbody tr:nth-child(even) {
+    background: #fbfcfb;
+}
+.scs-table tbody tr:hover {
+    background: var(--scs-gray);
+}
+.scs-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ----------------------------- Botones ----------------------------- */
+.scs-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: var(--scs-radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.scs-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.scs-btn-sm {
+    padding: 7px 12px;
+    font-size: 13px;
+}
+.scs-btn-primary {
+    background: var(--scs-green);
+    color: var(--scs-white);
+}
+.scs-btn-primary:hover:not(:disabled) {
+    background: var(--scs-green-dark);
+}
+.scs-btn-secondary {
+    background: transparent;
+    color: var(--scs-green);
+    border-color: var(--scs-green);
+}
+.scs-btn-secondary:hover:not(:disabled) {
+    background: var(--scs-bg);
+}
+.scs-btn-danger {
+    background: transparent;
+    color: var(--scs-danger);
+    border-color: var(--scs-danger);
+}
+.scs-btn-danger:hover:not(:disabled) {
+    background: var(--scs-danger-bg);
+}
+.scs-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--scs-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.scs-icon-btn:hover {
+    background: var(--scs-gray);
+    color: var(--scs-text);
+}
+
+/* ----------------------------- Formularios ----------------------------- */
+.scs-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+.scs-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--scs-text);
+}
+.scs-input {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--scs-border);
+    border-radius: var(--scs-radius);
+    background: var(--scs-white);
+    color: var(--scs-text);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.scs-input:focus {
+    outline: none;
+    border-color: var(--scs-green);
+    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.14);
+}
+.scs-input.error {
+    border-color: var(--scs-danger);
+}
+.scs-field-msg {
+    font-size: 12.5px;
+    color: var(--scs-danger);
+}
+.scs-form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.scs-form-row > .scs-field {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* ----------------------------- Badges ----------------------------- */
+.scs-badge {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.scs-badge-green {
+    background: var(--scs-ok-bg);
+    color: var(--scs-green);
+}
+.scs-badge-gray {
+    background: var(--scs-gray);
+    color: var(--scs-muted);
+}
+.scs-badge-danger {
+    background: var(--scs-danger-bg);
+    color: var(--scs-danger);
+}
+
+/* ----------------------------- Alertas ----------------------------- */
+.scs-alert {
+    padding: 12px 15px;
+    border-radius: var(--scs-radius);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    border-left: 4px solid transparent;
+}
+.scs-alert-ok {
+    background: var(--scs-ok-bg);
+    color: var(--scs-green);
+    border-left-color: var(--scs-green);
+}
+.scs-alert-error {
+    background: var(--scs-danger-bg);
+    color: var(--scs-danger);
+    border-left-color: var(--scs-danger);
+}
+
+/* ----------------------------- Modal ----------------------------- */
+.scs-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 42, 74, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 50;
+}
+.scs-modal {
+    background: var(--scs-white);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 470px;
+    box-shadow: var(--scs-shadow-modal);
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.scs-modal-head {
+    background: var(--scs-navy);
+    color: var(--scs-white);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.scs-modal-head h2 {
+    margin: 0;
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--scs-white);
+}
+.scs-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--scs-white);
+    cursor: pointer;
+    display: flex;
+    padding: 2px;
+    opacity: 0.8;
+}
+.scs-modal-close:hover {
+    opacity: 1;
+}
+.scs-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+.scs-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+/* ----------------------------- Utilidades ----------------------------- */
+.scs-empty {
+    text-align: center;
+    color: var(--scs-muted);
+    padding: 30px 10px;
+    font-size: 14px;
+}
+.scs-welcome {
+    background: var(--scs-white);
+    border: 1px solid var(--scs-border);
+    border-left: 4px solid var(--scs-green);
+    border-radius: var(--scs-radius);
+    padding: 20px 22px;
+    margin-bottom: 20px;
+}
+.scs-welcome h2 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    color: var(--scs-navy);
+}
+.scs-welcome p {
+    margin: 0;
+    color: var(--scs-muted);
+    font-size: 14px;
+}
+.scs-two-col {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: 18px;
+    align-items: start;
+}
+.scs-bar {
+    height: 12px;
+    border-radius: 999px;
+    background: var(--scs-gray);
+    overflow: hidden;
+}
+.scs-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--scs-green);
+}
+
+/* ----------------------------- Responsive ----------------------------- */
+.scs-overlay-nav { display: none; }
+
+@media (max-width: 820px) {
+    .scs-hamburger { display: inline-flex; }
+    .scs-brand-text { display: none; }
+
+    /* La barra lateral se vuelve un panel deslizable sobre el contenido. */
+    .scs-sidebar {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        bottom: 0;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+        box-shadow: 4px 0 20px rgba(27, 42, 74, 0.18);
+    }
+    .scs-sidebar.open { transform: translateX(0); }
+
+    .scs-overlay-nav {
+        display: block;
+        position: fixed;
+        inset: 64px 0 0 0;
+        background: rgba(27, 42, 74, 0.4);
+        z-index: 35;
+    }
+
+    .scs-main { padding: 20px 16px; }
+    .scs-topbar { padding: 0 16px; }
+    .scs-two-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+    .scs-logout-text { display: none; }
+    .scs-logout { padding: 8px 10px; }
+    .scs-page-title { font-size: 19px; }
+}
+
+/* ----------------------- Login (corporativo, 2 paneles) ------------------- */
+.scs-login {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    background: var(--scs-bg);
+    font-family: var(--scs-font);
+}
+
+/* Panel de marca (izquierda, navy institucional) */
+.scs-login-brand {
+    position: relative;
+    background: linear-gradient(155deg, #1b2a4a 0%, #1d3a5f 55%, #234010 150%);
+    color: var(--scs-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 60px;
+}
+.scs-login-brand .logo-box {
+    background: var(--scs-white);
+    border-radius: 10px;
+    padding: 14px 18px;
+    align-self: flex-start;
+    margin-bottom: 34px;
+}
+.scs-login-brand .logo-box img {
+    height: 54px;
+    display: block;
+}
+.scs-login-brand h1 {
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--scs-white);
+    margin: 0 0 16px;
+    max-width: 440px;
+}
+.scs-login-brand p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #c5d0e2;
+    margin: 0;
+    max-width: 440px;
+}
+.scs-login-brand .brand-foot {
+    position: absolute;
+    left: 60px;
+    bottom: 30px;
+    font-size: 12px;
+    color: #8a9bb8;
+}
+
+/* Panel de formulario (derecha, blanco) */
+.scs-login-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+.scs-login-card {
+    width: 100%;
+    max-width: 380px;
+}
+.scs-login-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--scs-navy);
+    margin: 0 0 4px;
+}
+.scs-login-sub {
+    color: var(--scs-muted);
+    font-size: 14px;
+    margin: 0 0 26px;
+}
+.scs-login-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    font-size: 15px;
+}
+.scs-login-foot {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--scs-muted);
+    text-align: center;
+}
+
+@media (max-width: 860px) {
+    .scs-login { grid-template-columns: 1fr; }
+    .scs-login-brand { display: none; }
+}
